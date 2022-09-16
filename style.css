@@ -1,0 +1,99 @@
+body {
+    background-color: #C4C4C4;
+    font-family: 'Roboto', 'Arial', sans-serif;
+}
+
+ul {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+p, li {
+    margin: 0;
+    padding: 0;
+}
+
+p {
+    margin-bottom: 5px;
+}
+
+.app {
+    display: flex;
+    flex-direction: column;
+    gap: 45px;
+    width: 500px;
+    padding-top: 62px;
+    padding-bottom: 72px;
+    margin: auto;
+}
+
+.search-list__element {
+    font-size: 30px;
+    height: 44px;
+    background-color: #E3E3E3;
+    border: 2px solid black;
+}
+
+.search-list {
+    overflow: hidden;
+    opacity: 1;
+    transition: 0.3s;
+    height: auto;
+}
+
+.search-list.hide{
+    height: 0;
+    opacity: 0;
+    transition: 0.3s;
+}
+
+.search-list.hide li {
+    height: 0;
+    opacity: 0;
+}
+
+.answer-list__element {
+    position: relative;
+    font-size: 24px;
+    line-height: 100%;
+    vertical-align: middle;
+    background-color: #E27BEB;
+    border: 1px solid black;
+    padding: 8px 16px 8px 16px;
+}
+
+.input-text {
+    font-size: 48px;
+    height: 61px;
+    width: 500px;
+    border: none;
+    box-sizing: border-box;
+}
+
+.close{
+    position: absolute;
+    top: 30px;
+    right: 34px;
+    width: 42px;
+    height: 38px;
+}
+
+.close:before,
+.close:after {
+    content: "";
+    position: absolute;
+    top: 17px;
+    left: -5px;
+    width: 50px;
+    height: 4px;
+    background: #FF0000;
+}
+
+.close:before {
+    transform: rotate(45deg);
+}
+
+.close:after {
+    transform: rotate(-45deg);
+}
