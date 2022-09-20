@@ -55,8 +55,6 @@ function addInfoPage(repoAnswer) {
     let fragment = new DocumentFragment();
     Object.keys(repoAnswer).forEach(key => {
         let li = document.createElement('li');
-        console.log('li', li);
-        console.log('fragment', fragment);
         li.textContent = repoAnswer[key]['name'];
         li.classList.add('search-list__element');
         li.id = key;
