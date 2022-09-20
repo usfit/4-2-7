@@ -9,11 +9,12 @@ let ul = document.querySelector('.search-list');
 let ulAnswer = document.querySelector('.answer-list');
 
 // Создание словаря
-let repoAnswer = {};
+// let repoAnswer = {};
 
 // Пустые значения в словаре
-function nullAnswer() {
-    for (let i = 0; i < 5; i++) {
+function nullAnswer(repo) {
+    let repoAnswer = {};
+    for (let i = 0; i < repo.length; i++) {
         repoAnswer[i] = {};
     }
     return repoAnswer;
@@ -24,6 +25,7 @@ async function getRepositories(qInput) {
     let url = `https://api.github.com/search/repositories?q=${qInput}&page=1&per_page=5&sort=stars&order=desc}`;
     let repos = await fetch(url);
     let answer = await repos.json();
+    // if (answer.message === 'Validation Failed')
     let repositories = answer.items;
     return repositories;
 }
@@ -41,29 +43,47 @@ function createAnswer(repositories) {
 // Функция очистки
 
 function clearInfo() {
-    input.value = '';
-    ul.childNodes.forEach(child => {
-        child.textContent = '';
-    })
+    while (ul.firstChild) {
+        ul.removeChild(ul.lastChild);
+    }
     ul.classList.toggle('hide');
+}
+
+// Функция добавление информации в список на страницу
+
+function addInfoPage(repoAnswer) {
+    let fragment = new DocumentFragment();
+    Object.keys(repoAnswer).forEach(key => {
+        let li = document.createElement('li');
+        li.textContent = repoAnswer[key]['name'];
+        li.classList.add('search-list__element');
+        li.id = key;
+        fragment.append(li);
+    })
+    ul.append(fragment);
 }
 
 // Получение информации из репозиториев Основная функция
 async function getRepositoriesInfo() {
-    let repositories = await getRepositories(qInput);
-    repoAnswer = nullAnswer()
-    repoAnswer = createAnswer(repositories);
+    if (qInput.length !== 0 && qInput.trim()) {
+        clearInfo();
+        let repositories = await getRepositories(qInput);
+        repoAnswer = nullAnswer(repositories);
+        repoAnswer = createAnswer(repositories);
+    
+        // Добавляем информацию в список на страницу
 
-    // Добавляем информацию в список на страницу
-    Object.keys(repoAnswer).forEach(key => {
-        ul.children[key].textContent = repoAnswer[key]['name'];
-    })
-
-    if (ul.classList.contains('hide')) {
-        ul.classList.toggle('hide');
+        addInfoPage(repoAnswer);
+    
+        if (ul.classList.contains('hide')) {
+            ul.classList.toggle('hide');
+        }
+        return repoAnswer;
+    } else {
+        input.value = '';
+        clearInfo();
     }
 
-    return repoAnswer;
 }
 
 // Схлопывание запросов
@@ -104,6 +124,7 @@ ul.addEventListener('click', (event) => {
         ulAnswer.append(liAnswer);
 
         // Чистим данные после клиека
+        input.value = '';
         clearInfo();
     }
 })
